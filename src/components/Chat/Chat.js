@@ -12,9 +12,13 @@ import Input from '../Input/Input';
 import './Chat.css';
 
 let socket;
+import { useHistory } from "react-router-dom";
+
+
+
 
 const Chat = ({location}) => {
-    const [redirect,setRedirect] = useState(false);
+    let history = useHistory();
     const [name,setName] = useState('');
     const [room,setRoom] = useState('');
     const [users, setUsers] = useState('');
@@ -29,11 +33,11 @@ const Chat = ({location}) => {
         setName(name);
         setRoom(room);
         socket.emit('disconnect',{name,room});
-
+        
         socket.emit('join',{name,room},(error) => {
             if(error) {
                 alert(error);
-                setRedirect(true);
+                history.push('/');
             }
         });
         
@@ -61,19 +65,17 @@ const Chat = ({location}) => {
         }
     }
 
-    if (redirect) {
-        return <Redirect to={'/'} />
-    }
-    return(
-        <div className="outerContainer">
-            <div className="container">
-                <InfoBar room={room} />
-                <Messages messages={messages} name={name} />
-                <Input message={message} setMessage={setMessage} sendMessage={sendMessage} />
+    
+        return(
+            <div className="outerContainer">
+                <div className="container">
+                    <InfoBar room={room} />
+                    <Messages messages={messages} name={name} />
+                    <Input message={message} setMessage={setMessage} sendMessage={sendMessage} />
+                </div>
+                <TextContainer users={users}/>
             </div>
-            <TextContainer users={users}/>
-        </div>
-    );
+        );
 };
 
 
