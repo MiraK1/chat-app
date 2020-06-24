@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import queryString from 'query-string';
 import io from "socket.io-client";
-import { Redirect } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 
 import TextContainer from '../TextContainer/TextContainer';
@@ -12,7 +12,6 @@ import Input from '../Input/Input';
 import './Chat.css';
 
 let socket;
-import { useHistory } from "react-router-dom";
 
 
 
