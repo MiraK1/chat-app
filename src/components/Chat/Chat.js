@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import queryString from 'query-string';
 import io from "socket.io-client";
+import { Redirect } from "react-router-dom";
+
 
 import TextContainer from '../TextContainer/TextContainer';
 import Messages from '../Messages/Messages';
@@ -12,6 +14,7 @@ import './Chat.css';
 let socket;
 
 const Chat = ({location}) => {
+    const [redirect,setRedirect] = useState(false);
     const [name,setName] = useState('');
     const [room,setRoom] = useState('');
     const [users, setUsers] = useState('');
@@ -30,6 +33,7 @@ const Chat = ({location}) => {
         socket.emit('join',{name,room},(error) => {
             if(error) {
                 alert(error);
+                setRedirect(true);
             }
         });
         
@@ -57,7 +61,10 @@ const Chat = ({location}) => {
         }
     }
 
-    return (
+    if (redirect) {
+        return <Redirect to={'/'} />
+    }
+    return(
         <div className="outerContainer">
             <div className="container">
                 <InfoBar room={room} />
